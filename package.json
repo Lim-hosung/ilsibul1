@@ -1,5 +1,5 @@
 {
-  "name": "a1-special-steel",
+  "name": "a1-special-steel-copy",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "@types/nodemailer": "^7.0.11",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.34.3",
+    "framer-motion": "^12.35.1",
     "lucide-react": "^0.575.0",
     "next": "13.5.6",
     "nodemailer": "^8.0.1",
