@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, ReactNode } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SlideCTA {
     labelKOR: string;
@@ -59,34 +60,29 @@ export function HeroSlider({ slides, lang, children, interval = 6000 }: HeroSlid
         <div className="relative w-full min-h-[600px] lg:min-h-[780px] overflow-hidden bg-gray-950">
 
             {/* Slides */}
-            {slides.map((slide, idx) => {
-                const isActive = idx === current;
-                const isPrev = idx === prev;
-
-                return (
-                    <div
-                        key={idx}
-                        className="absolute inset-0"
-                        style={{
-                            opacity: isActive ? 1 : isPrev ? 0 : 0,
-                            transition: 'opacity 0.9s ease-in-out',
-                            zIndex: isActive ? 2 : isPrev ? 1 : 0,
-                        }}
-                    >
-                        {/* Background image using img tag for better reliability */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                            src={slide.imageSrc}
-                            alt=""
-                            className={`absolute inset-0 w-full h-full object-cover ${isActive ? 'ken-burns' : ''}`}
-                            loading={idx === 0 ? 'eager' : 'lazy'}
-                        />
-                        {/* Gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-gray-950/85 via-gray-900/60 to-gray-900/20" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-950/50 via-transparent to-transparent" />
-                    </div>
-                );
-            })}
+            <AnimatePresence mode="popLayout" initial={false}>
+                <motion.div
+                    key={current}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.9, ease: 'easeInOut' }}
+                    className="absolute inset-0 z-0"
+                >
+                    <motion.img
+                        src={slides[current].imageSrc}
+                        alt=""
+                        initial={{ scale: 1 }}
+                        animate={{ scale: 1.08 }}
+                        transition={{ duration: interval / 1000 + 1, ease: 'linear' }}
+                        className="absolute inset-0 w-full h-full object-cover"
+                        loading={current === 0 ? 'eager' : 'lazy'}
+                    />
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-950/85 via-gray-900/60 to-gray-900/20" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/50 via-transparent to-transparent" />
+                </motion.div>
+            </AnimatePresence>
 
             {/* Content */}
             <div className="relative z-10 h-full min-h-[600px] lg:min-h-[780px] flex items-center">
@@ -101,28 +97,34 @@ export function HeroSlider({ slides, lang, children, interval = 6000 }: HeroSlid
                         </div>
 
                         {/* Title */}
-                        <h1
+                        <motion.h1
                             key={`title-${current}`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
                             className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white tracking-wide mb-6 leading-[1.1] whitespace-pre-line"
-                            style={{ animation: 'slideUp 0.8s ease-out forwards' }}
                         >
                             {lang === 'ENG' ? slides[current].titleENG : slides[current].titleKOR}
-                        </h1>
+                        </motion.h1>
 
                         {/* Subtitle */}
-                        <p
+                        <motion.p
                             key={`sub-${current}`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.15, ease: [0.21, 0.47, 0.32, 0.98] }}
                             className="text-lg sm:text-xl text-gray-300 font-medium max-w-2xl leading-relaxed mb-10 whitespace-pre-line"
-                            style={{ animation: 'slideUp 0.8s ease-out 0.15s both' }}
                         >
                             {lang === 'ENG' ? slides[current].subtitleENG : slides[current].subtitleKOR}
-                        </p>
+                        </motion.p>
 
                         {/* CTA Buttons */}
-                        <div
+                        <motion.div
                             key={`cta-${current}`}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
                             className="flex flex-wrap gap-3"
-                            style={{ animation: 'slideUp 0.8s ease-out 0.3s both' }}
                         >
                             {slides[current].ctas
                                 ? slides[current].ctas!.map((cta, i) => (
@@ -136,7 +138,7 @@ export function HeroSlider({ slides, lang, children, interval = 6000 }: HeroSlid
                                 ))
                                 : children
                             }
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </div>
@@ -184,10 +186,6 @@ export function HeroSlider({ slides, lang, children, interval = 6000 }: HeroSlid
             </div>
 
             <style jsx>{`
-                @keyframes slideUp {
-                    from { opacity: 0; transform: translateY(24px); }
-                    to   { opacity: 1; transform: translateY(0); }
-                }
                 @keyframes progressBar {
                     from { width: 0%; }
                     to   { width: 100%; }

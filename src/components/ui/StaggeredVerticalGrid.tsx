@@ -1,5 +1,8 @@
+'use client';
+
 import { ReactNode } from 'react';
 import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
 
 interface StaggeredItem {
     title: string;
@@ -15,12 +18,31 @@ interface StaggeredVerticalGridProps {
 }
 
 export function StaggeredVerticalGrid({ title, subtitle, features }: StaggeredVerticalGridProps) {
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 50 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }
+    };
+
     return (
-        <section className="py-8 lg:py-16 bg-white">
+        <section className="py-8 lg:py-16 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header Section */}
-                <div className="mb-6 md:mb-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-10%" }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                    className="mb-6 md:mb-10"
+                >
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#111827] tracking-tight mb-4 whitespace-pre-line">
                         {title}
                     </h2>
@@ -29,9 +51,15 @@ export function StaggeredVerticalGrid({ title, subtitle, features }: StaggeredVe
                             {subtitle}
                         </p>
                     )}
-                </div>
+                </motion.div>
 
-                <div className={`grid grid-cols-2 md:grid-cols-3 ${features.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-1 md:gap-2 items-start`}>
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-10%" }}
+                    className={`grid grid-cols-2 md:grid-cols-3 ${features.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4'} gap-1 md:gap-2 items-start`}
+                >
                     {features.map((feature, idx) => {
                         // Create a uniform alternating stagger pattern
                         let mtClass = idx % 2 === 0 ? 'mt-0' : 'md:mt-12 lg:mt-16';
@@ -72,15 +100,17 @@ export function StaggeredVerticalGrid({ title, subtitle, features }: StaggeredVe
 
                         return feature.href ? (
                             <Link key={idx} href={feature.href} className={`block ${mtClass}`}>
-                                {cardContent}
+                                <motion.div variants={itemVariants}>
+                                    {cardContent}
+                                </motion.div>
                             </Link>
                         ) : (
-                            <div key={idx} className={mtClass}>
+                            <motion.div key={idx} variants={itemVariants} className={mtClass}>
                                 {cardContent}
-                            </div>
+                            </motion.div>
                         );
                     })}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

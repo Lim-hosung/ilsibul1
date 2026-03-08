@@ -1,6 +1,9 @@
+'use client';
+
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { motion, Variants } from 'framer-motion';
 
 interface FeatureItem {
     title: string;
@@ -24,20 +27,45 @@ export function FeatureGrid({ title, subtitle, features, columns = 3 }: FeatureG
         4: 'md:grid-cols-2 lg:grid-cols-4',
     };
 
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15 }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
+    };
+
     return (
-        <section className="py-8 lg:py-16 bg-white">
+        <section className="py-8 lg:py-16 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <div className="mb-8 md:mb-12 max-w-3xl">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-10%" }}
+                    transition={{ duration: 0.6, ease: 'easeOut' }}
+                    className="mb-8 md:mb-12 max-w-3xl"
+                >
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight mb-6">{title}</h2>
                     {subtitle && (
                         <p className="text-lg text-gray-500 leading-relaxed font-medium">
                             {subtitle}
                         </p>
                     )}
-                </div>
+                </motion.div>
 
-                <div className={`grid grid-cols-1 ${colClasses[columns]} gap-x-8 gap-y-8`}>
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: "-10%" }}
+                    className={`grid grid-cols-1 ${colClasses[columns]} gap-x-8 gap-y-8`}
+                >
                     {features.map((feature, idx) => {
                         const content = (
                             <>
@@ -75,19 +103,21 @@ export function FeatureGrid({ title, subtitle, features, columns = 3 }: FeatureG
 
                         if (feature.href) {
                             return (
-                                <Link key={idx} href={feature.href} className="group block">
-                                    {content}
+                                <Link key={idx} href={feature.href} className="group block h-full">
+                                    <motion.div variants={itemVariants} className="h-full">
+                                        {content}
+                                    </motion.div>
                                 </Link>
                             );
                         }
 
                         return (
-                            <div key={idx} className="group">
+                            <motion.div key={idx} variants={itemVariants} className="group">
                                 {content}
-                            </div>
+                            </motion.div>
                         );
                     })}
-                </div>
+                </motion.div>
             </div>
         </section>
     );

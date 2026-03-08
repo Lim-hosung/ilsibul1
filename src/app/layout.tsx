@@ -39,13 +39,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased flex flex-col pt-20">
+      <body className="min-h-screen bg-background font-sans antialiased text-foreground">
         <LanguageProvider>
           <Header />
-          <main className="flex-grow flex flex-col">
-            <Breadcrumb />
-            {children}
-          </main>
+          {children}
           <Footer />
         </LanguageProvider>
       </body>
