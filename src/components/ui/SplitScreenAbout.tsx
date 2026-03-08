@@ -47,9 +47,9 @@ export function SplitScreenAbout() {
                 >
                     <div className="absolute inset-0 bg-black/30 z-10" />
                     <img
-                        src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1600"
-                        alt="Quality Steel"
-                        className="w-full h-full object-cover grayscale"
+                        src="/images/hero/hero-1.jpg"
+                        alt="A1 Special Steel Facility"
+                        className="w-full h-full object-cover"
                     />
                 </motion.div>
             </div>

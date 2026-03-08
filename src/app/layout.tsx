@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { Breadcrumb } from '@/components/layout/Breadcrumb';
+import { ConditionalFooter } from '@/components/layout/ConditionalFooter';
 import { LanguageProvider } from '@/lib/LanguageContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -39,11 +38,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={inter.variable}>
-      <body className="min-h-screen bg-background font-sans antialiased text-foreground">
+      <body className="min-h-screen bg-background font-sans antialiased text-foreground overflow-x-hidden">
         <LanguageProvider>
           <Header />
           {children}
-          <Footer />
+          <ConditionalFooter />
         </LanguageProvider>
       </body>
     </html>

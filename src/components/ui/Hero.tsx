@@ -30,7 +30,7 @@ export function Hero({
     };
 
     return (
-        <div className={`relative flex w-full ${heightClasses[size]} overflow-hidden bg-gray-900`}>
+        <div className={`relative flex w-full ${heightClasses[size]} overflow-hidden bg-gray-900 pt-20`}>
             {/* Background Image */}
             {imageSrc && (
                 // eslint-disable-next-line @next/next/no-img-element

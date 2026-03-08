@@ -3,20 +3,23 @@
 import { motion } from 'framer-motion';
 import { useLang } from '@/lib/LanguageContext';
 import Link from 'next/link';
+import { Footer } from '@/components/layout/Footer';
 
 export function FullScreenFooter() {
     const { lang } = useLang();
 
     return (
-        <section className="relative w-full h-screen snap-start bg-gray-900 flex flex-col items-center justify-center overflow-hidden">
-            <div className="absolute inset-0 bg-blue-900/10 z-0" />
+        <section className="relative w-full min-h-screen snap-start bg-black flex flex-col overflow-hidden">
+            {/* CTA Section */}
+            <div className="relative flex-grow flex flex-col items-center justify-center py-24 md:py-32">
+                <div className="absolute inset-0 bg-blue-900/5 z-0" />
 
-            <div className="relative z-10 max-w-4xl px-4 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false }}
                     transition={{ duration: 0.8 }}
+                    className="relative z-10 max-w-4xl px-4 text-center"
                 >
                     <h2 className="text-5xl md:text-7xl font-black text-white tracking-tight mb-8">
                         {lang === 'ENG' ? 'READY TO BUILD?' : '성공적인 파트너십의 시작'}
@@ -33,12 +36,9 @@ export function FullScreenFooter() {
                 </motion.div>
             </div>
 
-            {/* Minimal Footer Credits */}
-            <div className="absolute bottom-8 left-0 right-0 px-8 flex justify-between text-gray-500 text-sm font-medium z-10 w-full max-w-7xl mx-auto">
-                <span>© 2024 A1 Special Steel</span>
-                <Link href="/about/map" className="hover:text-white transition-colors">
-                    {lang === 'ENG' ? 'Location Map' : '오시는 길'}
-                </Link>
+            {/* Actual Footer Component */}
+            <div className="relative z-20">
+                <Footer />
             </div>
         </section>
     );
